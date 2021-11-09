@@ -16,6 +16,8 @@ namespace essample.Infra
 
         public async Task<ReadOnlyCollection<object>> Handle(string streamId, object command)
         {
+            Console.WriteLine($"Handling {streamId}: {command} ");
+            Console.WriteLine("Add whatever cross-cutting things here");
             switch(command)
             {
                 case TemplateFolderCommand templateFolderCommand:

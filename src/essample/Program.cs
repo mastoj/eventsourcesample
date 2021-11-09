@@ -10,8 +10,6 @@ namespace essample.Infra
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
             Func<string, string, TemplateFolderEvent> parseEvent = (eventType, jsonData) => {
                 switch(eventType) {
                     case "TemplateFolderCreated":
