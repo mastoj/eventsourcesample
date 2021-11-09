@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace essample.Domain
 {
-    public abstract record CreateTemplateCommand {}
-    public abstract record CreateTemplateEvent {}
+    public abstract record TemplateFolderCommand {}
+    public abstract record TemplateFolderEvent {}
 
     public class FolderExistsException : Exception {}
-    public record CreateTemplateFolder(string Name) : CreateTemplateCommand {}
-    public record TemplateFolderCreated(string Name) : CreateTemplateEvent {}
+    public record CreateTemplateFolder(string Name) : TemplateFolderCommand {}
+    public record TemplateFolderCreated(string Name) : TemplateFolderEvent {}
     public record TemplateFolder(string Name) {
         public static TemplateFolder Initial = new TemplateFolder("");
-        public static ReadOnlyCollection<CreateTemplateEvent> Decide(CreateTemplateCommand command, TemplateFolder state)
+        public static ReadOnlyCollection<TemplateFolderEvent> Decide(TemplateFolderCommand command, TemplateFolder state)
         {
             switch(command)
             {
@@ -21,7 +21,7 @@ namespace essample.Domain
                     if(state.Name != "") {
                         throw new FolderExistsException();
                     }
-                    return new List<CreateTemplateEvent> { 
+                    return new List<TemplateFolderEvent> { 
                         new TemplateFolderCreated(createTemplateFolder.Name)
                     }.AsReadOnly();
                 default:
@@ -29,7 +29,7 @@ namespace essample.Domain
             }
         }
 
-        public static TemplateFolder Build(TemplateFolder state, CreateTemplateEvent @event)
+        public static TemplateFolder Build(TemplateFolder state, TemplateFolderEvent @event)
         {
             switch(@event) {
                 case TemplateFolderCreated templateFolderCreated:
@@ -39,7 +39,7 @@ namespace essample.Domain
             }            
         }
 
-        public static TemplateFolder Build(TemplateFolder state, ReadOnlyCollection<CreateTemplateEvent> events)
+        public static TemplateFolder Build(TemplateFolder state, ReadOnlyCollection<TemplateFolderEvent> events)
         {
             return events.Aggregate(state, Build);
         }
