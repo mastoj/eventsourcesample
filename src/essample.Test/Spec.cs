@@ -20,29 +20,27 @@ namespace essample.Infra.Test
         }
     }
 
-    public abstract class Spec<TCommand, TState, TEvent>
+    public abstract class Spec<TCommand, TState, TEvent> where TEvent : class
     {
         public SpecState<TState, TEvent> SpecState { get; private set; }
-        public Decide<TCommand, TState, TEvent> Decide { get; private set; }
-        public Build<TState, TEvent> Build { get; set; }
+        public Handler<TCommand, TState, TEvent> Handler { get; }
 
-        public Spec(TState initialState, Decide<TCommand, TState, TEvent> decide, Build<TState, TEvent> build)
+        public Spec(Handler<TCommand, TState, TEvent> handler)
         {
-            SpecState = Test.SpecState.Create(initialState, new List<TEvent> { }.AsReadOnly());
-            Decide = decide;
-            Build = build;
+            SpecState = Test.SpecState.Create(handler.InitialState, new List<TEvent> { }.AsReadOnly());
+            Handler = handler;
         }
 
         public void Given(List<TEvent> events)
         {
-            var newState = Build(SpecState.State, events.AsReadOnly());
+            var newState = Handler.Build(SpecState.State, events.AsReadOnly());
             SpecState = SpecState with { State = newState };
         }
 
         public void When(TCommand command)
         {
-            var result = Decide(command, SpecState.State);
-            var newState = Build(SpecState.State, result);
+            var result = Handler.Decide(command, SpecState.State);
+            var newState = Handler.Build(SpecState.State, result);
             SpecState = SpecState with { Outcome = result, State = newState };
         }
 
