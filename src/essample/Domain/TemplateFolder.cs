@@ -2,11 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json;
 
 namespace essample.Infra.Domain
 {
     public abstract record TemplateFolderCommand {}
-    public abstract record TemplateFolderEvent {}
+    public abstract record TemplateFolderEvent {
+        public static TemplateFolderEvent EventParser(string eventType, string jsonData)
+        {
+            switch(eventType) {
+                case "TemplateFolderCreated":
+                    return JsonSerializer.Deserialize<TemplateFolderCreated>(jsonData);
+                default: 
+                    throw new ArgumentException("Invalid event type");
+            }
+        }
+    }
 
     public class FolderExistsException : Exception {}
     public record CreateTemplateFolder(string Name) : TemplateFolderCommand {}

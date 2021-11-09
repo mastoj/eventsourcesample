@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
 using essample.Infra.Domain;
 
 namespace essample.Infra
 {
+
     class Program
     {
         static void Main(string[] args)
@@ -22,19 +22,12 @@ namespace essample.Infra
             };
 
             IEventStore eventStore = new InMemoryStore();
+            var application = new Application(eventStore);
+            var streamId = Guid.NewGuid().ToString("N");
+            var result = application.Handle(streamId, new CreateTemplateFolder("Hello")).Result;
+            result.ToList().ForEach(e => Console.WriteLine($"Event: {e}"));
 
-            // Get events
-            var readResult = eventStore.ReadEvents<TemplateFolderEvent>("my-folder", parseEvent).Result;
-            var expectedVersion = readResult.CurrentRevision;
-            var events = readResult.Events;
-            var currentState = TemplateFolder.Build(TemplateFolder.Initial, events);
-            var outcome = TemplateFolder.Decide(new CreateTemplateFolder("Hello"), currentState);
-            eventStore.AppendEvents("my-folder", expectedVersion, outcome).Wait();
-
-            // var newState = TemplateFolder.Build(currentState, outcome);
-            // Save events
-            Console.WriteLine($"==> Out: {String.Join(", ", outcome.Select(y => y.ToString()))}");
-            // var outcome2 = TemplateFolder.Decide(new CreateTemplateFolder("Hello"), newState);
+            var result2 = application.Handle(streamId, new CreateTemplateFolder("Hello")).Result;
         }
     }
 }
