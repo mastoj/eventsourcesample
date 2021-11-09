@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
-using essample.Domain;
+using essample.Infra.Domain;
 
-namespace essample
+namespace essample.Infra
 {
     class Program
     {

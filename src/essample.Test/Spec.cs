@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xunit;
 
-namespace essample.Test
+namespace essample.Infra.Test
 {
     public delegate ReadOnlyCollection<TEvent> Decide<TCommand, TState, TEvent>(TCommand command, TState state);
     public delegate TState Build<TState, TEvent>(TState state, ReadOnlyCollection<TEvent> events);

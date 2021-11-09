@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using essample.Domain;
+using essample.Infra.Domain;
 using FluentAssertions;
 using Xunit;
 
-namespace essample.Test
+namespace essample.Infra.Test
 {
     public class TemplateFolderTests : Spec<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>
     {
