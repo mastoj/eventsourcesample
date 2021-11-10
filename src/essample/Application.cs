@@ -1,7 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using essample.Infra.Domain;
+using essample.Domain;
 
 namespace essample.Infra
 {
@@ -26,5 +26,7 @@ namespace essample.Infra
                     throw new ArgumentException($"Invalid command: {command.GetType().FullName}");
             }
         }
+
+        public static string CreateStreamId() => Guid.NewGuid().ToString("N");
     }
 }

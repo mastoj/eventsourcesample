@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
-using essample.Infra.Domain;
+using essample.Domain;
 
 namespace essample.Infra
 {

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
 
-namespace essample.Infra.Domain
+namespace essample.Domain
 {
     public abstract record TemplateFolderCommand {}
     public abstract record TemplateFolderEvent {
@@ -20,7 +20,17 @@ namespace essample.Infra.Domain
     }
 
     public class FolderExistsException : Exception {}
-    public record CreateTemplateFolder(string Name) : TemplateFolderCommand {}
+    public record CreateTemplateFolder : TemplateFolderCommand {
+        public string Name { get; }
+        public CreateTemplateFolder(string name)
+        {
+            if(String.IsNullOrEmpty(name)) {
+                throw new ArgumentException("Name can't be null or empty");
+            }
+            Name = name;
+        }
+
+    }
     public record TemplateFolderCreated(string Name) : TemplateFolderEvent {}
     public record TemplateFolder(string Name) {
         public static TemplateFolder Initial = new TemplateFolder("");
