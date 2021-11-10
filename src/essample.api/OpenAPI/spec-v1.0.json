@@ -1,0 +1,55 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "API Title",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/",
+      "description": "Local development server"
+    },
+    { "url": "https://api.server.test/v1" }
+  ],
+  "components": {
+    "schemas": {
+      "CreateTemplateFolderRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/templatefolder": {
+      "post": {
+        "description": "Create template folder",
+        "parameters": [
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateFolderRequest"
+              }, 
+              "example": {
+                "name": "folder-name"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}
