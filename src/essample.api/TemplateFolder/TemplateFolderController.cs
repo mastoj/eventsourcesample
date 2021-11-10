@@ -36,5 +36,20 @@ Content-Type: application/json
             
             return await Application.Handle(Application.CreateStreamId(), request.ToCommand());
         }
+
+        /*
+POST http://localhost:5000/api/templatefolder/e58203f9bdce40c48704e45f24eeb059
+Content-Type: application/json
+
+{
+    "name": "tomas-folder2"
+}
+        */
+        [HttpPost("{templateFolderId}")]
+        public async Task<object> UpdateTemplateFolder(string templateFolderId, UpdateTemplateFolderRequest request)
+        {
+            
+            return await Application.Handle(templateFolderId, request.ToCommand());
+        }
     }
 }

@@ -8,4 +8,11 @@ namespace essample.api.TemplateFolder.Types
             return new CreateTemplateFolder(name);
         }
     }
+
+    public record UpdateTemplateFolderRequest(string name)
+    {
+        public UpdateTemplateFolder ToCommand() {
+            return new UpdateTemplateFolder(name);
+        }
+    }
 }

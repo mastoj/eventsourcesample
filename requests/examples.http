@@ -1,0 +1,14 @@
+POST http://localhost:5000/api/templatefolder
+Content-Type: application/json
+
+{
+    "name": "tomas-folder"
+}
+
+###
+POST http://localhost:5000/api/templatefolder/a7df22ae11f746d78cdedfd0bd307f24
+Content-Type: application/json
+
+{
+    "name": "tomas-folder3"
+}

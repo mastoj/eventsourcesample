@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using essample.Infra.Domain;
+using essample.Domain;
 using FluentAssertions;
 using Xunit;
 
@@ -33,6 +33,26 @@ namespace essample.Infra.Test
                 When(new CreateTemplateFolder("MyFolder"));
             };
             action.Should().Throw<FolderExistsException>();
+        }
+
+        [Fact]
+        public void UpdateTemplateFolder_Fails_If_Folder_Is_Missing()
+        {
+            Action action = () => {
+                Given(new List<TemplateFolderEvent> { });
+                When(new UpdateTemplateFolder("MyFolder"));
+            };
+            action.Should().Throw<FolderMissingException>();
+        }
+
+        [Fact]
+        public void UpdateTemplateFolder_Updates_Name_If_Exists()
+        {
+            Given(new List<TemplateFolderEvent> { new TemplateFolderCreated("MyFolder") });
+            When(new UpdateTemplateFolder("MyFolder2"));
+            Then(new List<TemplateFolderEvent> {
+                new TemplateFolderUpdated("MyFolder2")
+            });
         }
     }
 }

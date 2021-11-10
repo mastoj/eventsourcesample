@@ -35,6 +35,7 @@ namespace essample.Infra
             var events = readResult.Events;
             var currentState = Build(InitialState, events);
             var outcome = Decide(command, currentState);
+            Console.WriteLine($"==> Writing to stream : {streamId}");
             await EventStore.AppendEvents(streamId, expectedVersion, outcome);
             return outcome.Cast<Object>().ToList().AsReadOnly();
         }

@@ -20,13 +20,24 @@
             "type": "string"
           }
         }
+      },
+      "UpdateTemplateFolderRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
       }
     }
   },
   "paths": {
     "/api/templatefolder": {
       "post": {
+        "tags": ["Template folder"],
+        "summary": "Create template folder",
         "description": "Create template folder",
+        "operationId": "createTemplateFolder",
         "parameters": [
         ],
         "requestBody": {
@@ -47,6 +58,32 @@
           },
           "500": {
             "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/templatefolder/{templateFolderId}": {
+      "put": {
+        "tags": ["Template folder"],
+        "description":"Update folder name",
+        "summary":"Update folder name",
+        "operationId": "updateFolderName",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateFolderRequest"
+              }, 
+              "example": {
+                "name": "folder-name"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
