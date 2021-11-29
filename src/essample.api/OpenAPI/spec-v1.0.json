@@ -68,7 +68,17 @@
         "description":"Update folder name",
         "summary":"Update folder name",
         "operationId": "updateFolderName",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "templateFolderId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The id of the template to update",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {

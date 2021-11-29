@@ -45,9 +45,8 @@ namespace essample.Domain
     }
     public record TemplateFolderCreated(string Name) : TemplateFolderEvent;
     public record TemplateFolderUpdated(string Name) : TemplateFolderEvent;
-    public record TemplateFolder(string Name) {
-        public static TemplateFolder Initial = new TemplateFolder("");
 
+    public static class TemplateFolderDecider {
         public static ReadOnlyCollection<TemplateFolderEvent> Handle(CreateTemplateFolder command, TemplateFolder state)
         {
             if(state.Name != "") {
@@ -68,19 +67,22 @@ namespace essample.Domain
             }.AsReadOnly();
         }
 
-        public static ReadOnlyCollection<TemplateFolderEvent> Decide(TemplateFolderCommand command, TemplateFolder state)
-        {
-            switch(command)
-            {
-                case CreateTemplateFolder createTemplateFolder:
-                    return Handle(createTemplateFolder, state);
-                case UpdateTemplateFolder updateTemplateFolder:
-                    return Handle(updateTemplateFolder, state);
-                default:
-                    throw new NotImplementedException($"Invalid command {command.GetType().FullName}");
-            }
+        public static Func<TemplateFolderCommand, TemplateFolder, ReadOnlyCollection<TemplateFolderEvent>> Create() {
+            return (command, state) => {
+                switch(command)
+                {
+                    case CreateTemplateFolder createTemplateFolder:
+                        return Handle(createTemplateFolder, state);
+                    case UpdateTemplateFolder updateTemplateFolder:
+                        return Handle(updateTemplateFolder, state);
+                    default:
+                        throw new NotImplementedException($"Invalid command {command.GetType().FullName}");
+                };
+            };
         }
+    }
 
+    public static class TemplateFolderBuilder {
         public static TemplateFolder Apply(TemplateFolderCreated @event, TemplateFolder state)
         {
             return state with { Name = @event.Name};
@@ -103,9 +105,13 @@ namespace essample.Domain
             }            
         }
 
-        public static TemplateFolder Build(TemplateFolder state, ReadOnlyCollection<TemplateFolderEvent> events)
-        {
-            return events.Aggregate(state, Build);
+        public static Func<TemplateFolder, ReadOnlyCollection<TemplateFolderEvent>, TemplateFolder> Create() {
+            return (state, events) => {
+                return events.Aggregate(state, Build);
+            };
         }
+    }
+    public record TemplateFolder(string Name) {
+        public static TemplateFolder Initial = new TemplateFolder("");
     }
 }

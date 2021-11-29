@@ -8,7 +8,7 @@ namespace essample.Infra.Test
 {
     public class TemplateFolderTests : Spec<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>
     {
-        public TemplateFolderTests() : base(new Handler<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>(TemplateFolder.Initial, TemplateFolder.Build, TemplateFolder.Decide, new InMemoryStore(), TemplateFolderEvent.EventParser))
+        public TemplateFolderTests() : base(new Handler<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>(TemplateFolder.Initial, TemplateFolderBuilder.Create(), TemplateFolderDecider.Create(), new InMemoryStore(), TemplateFolderEvent.EventParser))
         {
         }
 
