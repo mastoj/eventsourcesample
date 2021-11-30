@@ -11,7 +11,7 @@ namespace essample.Infra
 
         public Application(IEventStore eventStore)
         {
-            TemplateFolderHandler = new Handler<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>(TemplateFolder.Initial, TemplateFolderBuilder.Create(), TemplateFolderDecider.Create(), eventStore, TemplateFolderEvent.EventParser);
+            TemplateFolderHandler = new Handler<TemplateFolderCommand, TemplateFolder, TemplateFolderEvent>(TemplateFolder.Initial, TemplateFolderBuilder.Create(), TemplateFolderDecider.Create(), eventStore, TemplateFolderEvent.EventParser, TemplateFolderEvent.GetEventName);
         }
 
         public async Task<ReadOnlyCollection<object>> Handle(string streamId, object command)

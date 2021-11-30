@@ -17,7 +17,18 @@ namespace essample.Domain
                     throw new ArgumentException("Invalid event type");
             }
         }
-    }
+
+        public static string GetEventName(TemplateFolderEvent @event) {
+            switch(@event) {
+                case TemplateFolderCreated _: 
+                    return "v1.TemplateFolderCreated";
+                case TemplateFolderUpdated _:
+                    return "v1.TemplateFolderUpdated";
+                default: 
+                    throw new ArgumentException("Invalid event type");
+            }
+        }
+    }    
 
     public class FolderExistsException : Exception {}
     public class FolderMissingException : Exception {}

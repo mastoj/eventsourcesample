@@ -38,12 +38,13 @@ namespace essample.Infra
             }
         }
 
-        public async Task AppendEvents<TEvent>(string streamId, UInt64? expectedVersion, ReadOnlyCollection<TEvent> events) 
+        public async Task AppendEvents<TEvent>(string streamId, UInt64? expectedVersion, ReadOnlyCollection<TEvent> events, Func<TEvent, string> getName = null) 
         {
+            getName = getName ?? (e => e.GetType().Name);
             var data = events.Select(e => {
                 return new EventData(
                     Uuid.NewUuid(),
-                    e.GetType().Name,
+                    getName(e),
                     Encoding.UTF8.GetBytes(JsonSerializer.Serialize(e))
                 );
             });

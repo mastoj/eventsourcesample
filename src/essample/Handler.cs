@@ -12,13 +12,15 @@ namespace essample.Infra
         public Func<TCommand, TState, ReadOnlyCollection<TEvent>> Decide { get; }
         public IEventStore EventStore { get; }
         public Func<string, string, TEvent> EventParser { get; }
+        public Func<TEvent, string> GetEventName { get; }
 
         public Handler(
             TState initialState,
             Func<TState, ReadOnlyCollection<TEvent>, TState> build,
             Func<TCommand, TState, ReadOnlyCollection<TEvent>> decide,
             IEventStore eventStore,
-            Func<string, string, TEvent> eventParser        
+            Func<string, string, TEvent> eventParser,
+            Func<TEvent, string> getEventName
         )
         {
             InitialState = initialState;
@@ -26,6 +28,7 @@ namespace essample.Infra
             Decide = decide;
             EventStore = eventStore;
             EventParser = eventParser;
+            GetEventName = getEventName;
         }
 
         public async Task<ReadOnlyCollection<Object>> Handle(string streamId, TCommand command)
@@ -36,7 +39,7 @@ namespace essample.Infra
             var currentState = Build(InitialState, events);
             var outcome = Decide(command, currentState);
             Console.WriteLine($"==> Writing to stream : {streamId}");
-            await EventStore.AppendEvents(streamId, expectedVersion, outcome);
+            await EventStore.AppendEvents(streamId, expectedVersion, outcome, GetEventName);
             return outcome.Cast<Object>().ToList().AsReadOnly();
         }
     }
