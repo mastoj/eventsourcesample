@@ -40,6 +40,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v1.6
         with:
     # Additional arguments to the sonarcloud scanner
-          args: # optional
+#          args: # optional
     # Set the sonar.projectBaseDir analysis property
           projectBaseDir: ./src
+        env:
+          SONAR_TOKEN: {{ secrets.SONAR_TOKEN }}
