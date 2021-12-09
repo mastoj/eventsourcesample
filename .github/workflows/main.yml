@@ -43,5 +43,5 @@ jobs:
 #          args: # optional
     # Set the sonar.projectBaseDir analysis property
           projectBaseDir: ./src
-        env:
-          SONAR_TOKEN: {{ secrets.SONAR_TOKEN }}
+    env:
+      SONAR_TOKEN: {{ secrets.SONAR_TOKEN }}
