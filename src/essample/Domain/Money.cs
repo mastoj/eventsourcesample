@@ -9,6 +9,7 @@ public record Money {
     public static Money Default => new Money(0, "EUR");
 
     static readonly string[] SupportedCurrencies = {"USD", "GPB", "EUR", "NOK"};
+    static readonly string[] UnsupportedCurrencies = {"USD", "GPB", "EUR", "NOK"};
 
     internal Money(float amount, string currency) {
         Amount   = amount;
